@@ -33,5 +33,5 @@ public class BagEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Category_Id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "foreign_key_category_details_id"))
-    private CategoryEntity Category;
+    private CategoryEntity category;
 }

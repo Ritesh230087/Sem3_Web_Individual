@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface BagService {
     void saveBag(BagPojo bagPojo) throws IOException;
     void updateBag(BagPojo bagPojo) throws IOException;
+    void decreaseBagQuantity(Integer bagId, int quantityToDecrease);
     List<BagEntity> getAllBags();
     Optional<BagEntity> getBagById(Integer id);
     void deleteBag(Integer id);

@@ -19,8 +19,8 @@ public class BagController {
 
 
     @PostMapping("/add")
-    public void Bag(@RequestBody @ModelAttribute BagPojo addBag) throws IOException {
-        bagService.saveBag(addBag);
+    public void addBag(@RequestBody @ModelAttribute BagPojo bagPojo) throws IOException {
+        bagService.saveBag(bagPojo);
     }
 
     @PutMapping("/bag/{id}")

@@ -25,4 +25,10 @@ public class OrderEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "foreign_key_user_details_id2")) // No need to quote here as it's just a column reference
     private UserEntity userEntity;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "bag_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "foreign_key_bag_details_id2")) // No need to quote here as it's just a column reference
+//    private UserEntity bagEntity;
+
+
 }

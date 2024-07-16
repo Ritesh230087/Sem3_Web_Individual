@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryPojo {
+public class CartPojo {
     private Integer id;
-    private String categoryName;
+    private Integer userId;  // Assuming userId is used to reference UserEntity
 }

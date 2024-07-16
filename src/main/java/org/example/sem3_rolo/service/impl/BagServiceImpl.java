@@ -2,8 +2,10 @@ package org.example.sem3_rolo.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.sem3_rolo.entity.BagEntity;
+import org.example.sem3_rolo.entity.CategoryEntity;
 import org.example.sem3_rolo.pojo.BagPojo;
 import org.example.sem3_rolo.repository.BagRepository;
+import org.example.sem3_rolo.repository.CategoryRepository;
 import org.example.sem3_rolo.service.BagService;
 import org.example.sem3_rolo.utils.ImageToBase64Bag;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class BagServiceImpl implements BagService {
     private final BagRepository bagRepository;
 
+    private final CategoryRepository categoryRepository;
+
     private final String UPLOAD_DIRECTORY =System.getProperty("user.dir")+"/bagfile";
     @Override
     public void saveBag(BagPojo bagPojo) throws IOException {
@@ -30,6 +34,10 @@ public class BagServiceImpl implements BagService {
         bagEntity.setBagDescription(bagPojo.getBagDescription());
         bagEntity.setQuantity(bagPojo.getQuantity());
         bagEntity.setPrice(bagPojo.getPrice());
+
+        CategoryEntity category = categoryRepository.findById(bagPojo.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        bagEntity.setCategory(category);
 
         if(bagPojo.getBagImage()!=null){
             Path filesave= Paths.get(UPLOAD_DIRECTORY,bagPojo.getBagImage().getOriginalFilename());
@@ -47,6 +55,10 @@ public class BagServiceImpl implements BagService {
         bagEntity.setBagDescription(bagPojo.getBagDescription());
         bagEntity.setQuantity(bagPojo.getQuantity());
         bagEntity.setPrice(bagPojo.getPrice());
+
+        CategoryEntity category = categoryRepository.findById(bagPojo.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        bagEntity.setCategory(category);
 
         // Handle the image update logic
         if (bagPojo.getBagImage() != null && !bagPojo.getBagImage().isEmpty()) {
@@ -67,14 +79,31 @@ public class BagServiceImpl implements BagService {
     }
 
     @Override
+    public void decreaseBagQuantity(Integer bagId, int quantityToDecrease) {
+        Optional<BagEntity> optionalBagEntity = bagRepository.findById(bagId);
+        if (optionalBagEntity.isPresent()) {
+            BagEntity bagEntity = optionalBagEntity.get();
+            Double currentQuantity = bagEntity.getQuantity();
+            if (currentQuantity >= quantityToDecrease) {
+                bagEntity.setQuantity(currentQuantity - quantityToDecrease);
+                bagRepository.save(bagEntity);
+            } else {
+                throw new IllegalArgumentException("Not enough quantity available in stock");
+            }
+        } else {
+            throw new RuntimeException("Bag not found");
+        }
+    }
+
+    @Override
     public List<BagEntity> getAllBags() {
         ImageToBase64Bag imageToBase64Bike=new ImageToBase64Bag();
-        List<BagEntity> bikeRentalEntities = bagRepository.findAll();
-        bikeRentalEntities=bikeRentalEntities.stream().map(bike->{
+        List<BagEntity> bagEntities = bagRepository.findAll();
+        bagEntities=bagEntities.stream().map(bike->{
             bike.setBagImage(imageToBase64Bike.getImageBase64(bike.getBagImage()));
             return bike;
         }).collect(Collectors.toList());
-        return bikeRentalEntities;
+        return bagEntities;
     }
 
     @Override
