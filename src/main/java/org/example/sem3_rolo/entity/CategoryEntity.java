@@ -3,7 +3,6 @@ package org.example.sem3_rolo.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 @Entity
 @Table(name="Category")
 @Getter
@@ -18,5 +17,4 @@ public class CategoryEntity {
 
     @Column(name="Category_name")
     private String categoryName;
-
 }

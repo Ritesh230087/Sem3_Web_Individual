@@ -1,5 +1,4 @@
 package org.example.sem3_rolo.pojo;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

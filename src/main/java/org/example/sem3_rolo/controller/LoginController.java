@@ -5,32 +5,34 @@ import org.example.sem3_rolo.pojo.UserPojo;
 import org.example.sem3_rolo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class LoginController {
     private final UserService userService;
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticateUser(@RequestBody UserPojo loginRequest) {
-        //for admin
+    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody UserPojo loginRequest) {
+        Map<String, Object> response = new HashMap<>();
         String adminUsername = "admin@gmail.com";
         String adminPassword = "Admin@123";
 
         if (loginRequest.getEmail().equals(adminUsername) && loginRequest.getPassword().equals(adminPassword)) {
-            return ResponseEntity.ok("Admin login successful!");
+            response.put("message", "Admin login successful!");
+            return ResponseEntity.ok(response);
         }
-
         UserPojo user = userService.findUserByEmail(loginRequest.getEmail());
         if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
-            return ResponseEntity.ok("Login successful!");
+            response.put("userId", user.getId()); // Include userId in response
+            response.put("message", "Login successful!");
+            return ResponseEntity.ok(response);
         }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-
+        response.put("message", "Invalid username or password");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 }

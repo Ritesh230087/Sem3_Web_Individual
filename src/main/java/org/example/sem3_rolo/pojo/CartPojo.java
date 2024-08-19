@@ -11,5 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CartPojo {
     private Integer id;
-    private Integer userId;  // Assuming userId is used to reference UserEntity
+    private Integer userId;
+    private Integer bagId;
+    private Integer quantity;
 }
+
+

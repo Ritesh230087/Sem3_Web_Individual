@@ -4,31 +4,30 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "\"order\"") // Quoting "order" table name
+@Table(name = "orders")
 @Getter
 @Setter
 public class OrderEntity {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parameter_setup_seq_gen")
-    @SequenceGenerator(name = "parameter_setup_seq_gen", sequenceName = "parameters_setup_seq", allocationSize = 1)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq_gen")
+    @SequenceGenerator(name = "order_seq_gen", sequenceName = "order_seq", allocationSize = 1)
     private Integer id;
 
-    @Column(name = "Order Date")
-    private Date orderdate;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
-    @Column(name = "Total Amount")
-    private Double totalamount;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bag_id", nullable = false)
+    private BagEntity bag;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "foreign_key_user_details_id2")) // No need to quote here as it's just a column reference
-    private UserEntity userEntity;
+    @Column(name = "total_amount", nullable = false)
+    private Double totalAmount;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "bag_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "foreign_key_bag_details_id2")) // No need to quote here as it's just a column reference
-//    private UserEntity bagEntity;
-
-
+    @Column(name = "order_date", nullable = false)
+    private LocalDate orderDate = LocalDate.now();
 }

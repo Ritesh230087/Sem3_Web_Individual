@@ -12,7 +12,7 @@ import lombok.Setter;
 public class UserPojo {
         private Integer id;
         private String username;
-        private String full_name;
+        private String fullName;
         private String email;
         private String password;
         private String address;

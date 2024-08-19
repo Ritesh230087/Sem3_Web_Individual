@@ -14,4 +14,5 @@ public interface BagService {
     List<BagEntity> getAllBags();
     Optional<BagEntity> getBagById(Integer id);
     void deleteBag(Integer id);
+    List<BagEntity> getBagsByCategoryId(Integer categoryId);
 }

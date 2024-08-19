@@ -1,6 +1,5 @@
 package org.example.sem3_rolo.repository;
 
-import org.apache.catalina.User;
 import org.example.sem3_rolo.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
